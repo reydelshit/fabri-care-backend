@@ -12,12 +12,22 @@ switch ($method) {
 
 
         if (!isset($_GET['user_Id'])) {
-            $sql = "SELECT * FROM users";
+            $sql = "SELECT CONCAT(users.fname, ' ', users.lname) AS fullname, users.*,
+                users.id AS user_Id
+                    FROM users
+               ";
         }
 
         if (isset($_GET['user_Id'])) {
             $user_Id = $_GET['user_Id'];
-            $sql = "SELECT users.fullname, uploads.upload_date, users.user_Id, uploads.upload_longblob FROM users INNER JOIN uploads ON users.user_Id = uploads.user_id WHERE users.user_Id = :user_Id";
+            $sql = "SELECT CONCAT(users.fname, ' ', users.lname) AS fullname,
+                image.image_uploadDate,
+                users.id AS user_Id,
+                image.image_path
+                    FROM users
+                    INNER JOIN image ON users.id = image.user_id
+                    WHERE users.id = :user_Id;
+                    ";
         }
 
 
@@ -40,7 +50,7 @@ switch ($method) {
 
     case "DELETE":
         $user = json_decode(file_get_contents('php://input'));
-        $sql = "DELETE FROM users WHERE user_Id = :user_Id";
+        $sql = "DELETE FROM users WHERE id = :user_Id";
         $stmt = $conn->prepare($sql);
 
         $stmt->bindParam(':user_Id', $user->user_Id);

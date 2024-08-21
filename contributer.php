@@ -11,14 +11,14 @@ switch ($method) {
     case "GET":
 
         $sql = "SELECT 
-                fullname,
+                CONCAT(users.fname, ' ', users.lname) AS fullname,
                 (SELECT COUNT(*) 
-                FROM uploads 
-                WHERE uploads.user_id = users.user_id) AS uploaded_image,
-                (SELECT DAYNAME(upload_date) 
-                FROM uploads 
-                WHERE uploads.user_id = users.user_id 
-                GROUP BY DAYNAME(upload_date) 
+                FROM image 
+                WHERE image.user_id = users.id) AS uploaded_image,
+                (SELECT DAYNAME(image_uploadDate) 
+                FROM image 
+                WHERE image.user_id = users.id 
+                GROUP BY DAYNAME(image_uploadDate) 
                 ORDER BY COUNT(*) DESC 
                 LIMIT 1) AS day_most_used
             FROM 

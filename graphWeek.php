@@ -14,7 +14,7 @@ switch ($method) {
         if (!isset($_GET['user_Id'])) {
             $sql = "SELECT 
                     days.day_name AS name,
-                    COALESCE(COUNT(uploads.upload_id), 0) AS total
+                    COALESCE(COUNT(image.image_id), 0) AS total
                 FROM
                     (SELECT 'Monday' AS day_name
                     UNION ALL SELECT 'Tuesday'
@@ -23,8 +23,8 @@ switch ($method) {
                     UNION ALL SELECT 'Friday'
                     UNION ALL SELECT 'Saturday'
                     UNION ALL SELECT 'Sunday') AS days
-                LEFT JOIN uploads 
-                    ON days.day_name = DAYNAME(uploads.upload_date)
+                LEFT JOIN image 
+                    ON days.day_name = DAYNAME(image.image_uploadDate)
                 GROUP BY 
                     days.day_name
                 ORDER BY 
