@@ -16,7 +16,7 @@ switch ($method) {
         }
 
         if (isset($_GET['feedback_id'])) {
-            $student_id = $_GET['feedback_id'];
+            $feedback_id = $_GET['feedback_id'];
             $sql = "SELECT * FROM feedbacks WHERE feedback_id = :feedback_id";
         }
 
@@ -29,9 +29,9 @@ switch ($method) {
             }
 
             $stmt->execute();
-            $student = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            $fedback = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-            echo json_encode($student);
+            echo json_encode($fedback);
         }
 
 
