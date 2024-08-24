@@ -53,6 +53,19 @@ switch ($method) {
 
 
         if ($stmt->execute()) {
+
+            $sl2 = "INSERT INTO notifications (notification_id, notification_message, created_at) 
+                        VALUES (:notification_id, :notification_message, :created_at)";
+            $stmt2 = $conn->prepare($sl2);
+            $message = $feedback->fullname . " just left new feedback. Don't miss out on their insights!";
+            $created_at = date('Y-m-d');
+            $stmt2->bindParam(':notification_id', $feedback->feedback_id);
+            $stmt2->bindParam(':notification_message', $message);
+            $stmt2->bindParam(':created_at', $created_at);
+
+            $stmt2->execute();
+
+
             $response = [
                 "status" => "success",
                 "message" => "Feedback submitted successfully"
